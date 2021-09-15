@@ -1,5 +1,15 @@
 # **SystemsExpert Video Notes**
 
+- [**SystemsExpert Video Notes**](#systemsexpert-video-notes)
+  - [**01 - Design Fundamentals - Introduction**](#01---design-fundamentals---introduction)
+  - [**02 - What Are Design Fundamentals?**](#02---what-are-design-fundamentals)
+    - [**4 Categories of Design Fundamentals**](#4-categories-of-design-fundamentals)
+  - [**03 - Client/Server Model**](#03---clientserver-model)
+  - [**04 - Network Protocols**](#04---network-protocols)
+  - [**05 - Storage**](#05---storage)
+  - [**06 - Latency and Throughput**](#06---latency-and-throughput)
+  - [**07 - Availability**](#07---availability)
+
 ## **01 - Design Fundamentals - Introduction**
 
 Design Fundamentals are necessary to tackle of Systems Design Interview.
@@ -202,3 +212,53 @@ Design Fundamentals are necessary to tackle of Systems Design Interview.
    6. **Service-Level Objective (SLO)**
       1. A guarantee given to a customer by a service provider.  SLOs typically make guarantees on a system's availability, amongst other things.
       2. SLOs constitute an SLA
+   7. **Process**
+      1. A program that is currently running on your machine.  You should always assume that any process may get terminated at any time in a sufficiently large system
+   8. **Node/Instance/Host**
+      1. These three terms refer to the same thing most of the time: A virtual or physical machine on which the developer runs processes.
+      2. Sometimes the word server also refers to the same concept
+   9. **Redundancy**
+      1. Concept - Duplication of critical data or services with the intention of increased reliability and availability of the system.
+      2. Server Failover - Remove single points of failure and provide backups (e.g. server failover)
+      3. Shared-nothing Architecture
+         1. Each node can operate independently of one another
+         2. No central service managing state or orchestrating activities
+         3. New servers can be added without special conditions or knowledge
+         4. No single point of failure
+      4. [Models of Redundancy] (https://www.ni.com/ja-jp/innovations/white-papers/08/redundant-system-basic-concepts.html)
+      5. Standby Redundancy
+         1. Standby redundancy, also known as **Backup Redundancy** is when you have an identical secondary unit to back up the primary unit,
+             The secondary unit typically does not monitor the system but is there just as a spare
+         2. The standby unit is not usually kept in sync with the primary unit, so it must reconcile it's I/O signals on the takeover of the
+             **Device Under Control (DUC)**
+         3. You also need a third party to be a watchdog, which monitors the system to decide when a switchover condition is met and command the
+             system to switch control to the standby unit and a voter
+         4. In standby redundancy, there are two basic types, **Cold Standby** and **Hot Standby**
+            1. Cold Standby - The secondary unit is powered off, thus preserving the reliability of the unit, so it takes time to bring it online
+                and it makes it more challenging to reconcile synchronization issues
+            2. Hot Standby - The secondary unit is powered up and can optionally monitor the DUC.  It can also be used as the watchdog and/or voter
+                to decide when to switch over.  It shortens the downtime, which in turn increases availability in your system.
+      6. N Modular Redundancy
+         1. N Modular Redundancy, also known as **Parallel Redundancy**, refers to the approach of having multiple units running in parallel.
+         2. All units are highly synchronized and receive the same input information at the same time.
+         3. Their output values are then compared and a voter decides which output values should be used. This model easily provides bumpless switchovers
+         4. This model typically has faster switchover times than Hot Standby models, but the system is more at risk of encountering a common node
+             failure across all units
+         5. In N Modular Redundancy, there are three main typologies:
+            1. **Dual Modular Redundancy (DMR)** - Uses two functional equivalent units, thus either can control the DUC.
+            2. **Triple Modular Redundancy (TMR)** - Uses three functionally equivalent units to provide redundant backup
+            3. **Quadruple Modular Redundancy (QMR)** - Uses four functionally equivalent units to provide redundant backup
+      7. 1:N Redundancy
+         1. 1:N is a design technique used where you have a single backup for multiple systems and this backup is able to function in the place of any
+             single one of the active systems.  This technique offers redundancy at a much lower cost than the other models by using one standby unit
+             for several primary units
+         2. This approach only works well when the primary units all have very similar functions, thus allowing the standby to back up any of the
+             primary units if one of them fails
+         3. The drawbacks of this approach are added complexity of deciding when to switch and of a switch matrix than can reroute signals correctly and efficiently
+   10. **Redundancy At Different Layers**
+       1.  Network Redundancy
+           1.  Layer 2 Redundancy (switches)
+               1.  Active/Standby using Spanning Tree Protocol
+               2.  Active/Active using per VLAN spanning tree protocol and Multiple Spanning Tree Protocol
+           2. Layer 3 Redundancy
+              1. First Hop Redundancy Protocols are designed to provide redundancy to clients by representing multiple default gateways in a group with a single IP
