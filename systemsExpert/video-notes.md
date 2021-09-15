@@ -69,6 +69,7 @@ Design Fundamentals are necessary to tackle of Systems Design Interview.
           2. `53`: DNS lookup
           3. `80`: HTTP
           4. `443`: HTTPS
+      4. Ports can be thought of as the mailbox numbers of an apartment complex, where the apartment complex is the IP Address
    6. **DNS**
       1. Short for **Domain Name System**, it describes the entities and protocols involved in the translation from domain names to IP Addresses.
           Typically, machines make a **DNS Query** to a well known entity, which is responsible for returning the IP Addresses (or multiple one)
@@ -79,5 +80,47 @@ Design Fundamentals are necessary to tackle of Systems Design Interview.
    3. **Browser** checks cache to see if you've ever been there before.
       1. If you have and you have data caching, it will load saved information and likely have the **IP Address**
    4. If not, the **Browser** (Client) makes a **DNS Query** to Server's **Domain Name** to get an **IP Address**
-   5. The **Domain Name System** return the **IP Address**, to which the **Browser** (client) sends a **request** for data
-   6. The **IP Address** (Server) will handle the **request** the best it can, and will generate a **response** to send back to the **Browser** (Client)
+      1. A DNS query can be emulated by using the `dig` terminal command on Ubuntu: `dig appacademy.io`
+   5. The **Domain Name System** return the **IP Address**, to which the **Browser** (client) sends a **HTTP Request** for data
+   6. The **IP Address** (Server) will handle the **HTTP Request** the best it can, and will generate a **HTTP Response** to send back to the **Browser** (Client)
+   7. You can simulate this experience by opening two Ubuntu Terminals:
+      1. In one terminal type `nc -l 8081` (NetCat Listen on 8081)
+      2. In the other terminal type `nc 127.0.0.1 8081`
+      3. This simulates a connection between the two terminals.  Anything typed in the one where you're listening will echo to the other
+
+## **04 - Network Protocols**
+
+1. **Key Terms**
+   1. **IP**
+      1. Stands for **Internet Protocol**.  This network protocol outlines how almost all machine-to-machine communications should happen in the world.
+          **TCP**/**UDP**/**HTTP** are built on top of **IP**
+   2. **TCP**
+      1. Network protocol built on top of the **Internet Protocol (IP)**.  Allows for ordered, reliable data delivery between machines over the
+          public internet by creating a **connection**
+      2. TCP is usually implemented in the kernel, which exposes **sockets** to applications that they can use to stream data through an open connection.
+   3. **HTTP**
+      1. The **H**yper**T**ext **T**ransfer **P**rotocol is a very common network protocol implemented on top of TCP.  Clients make **HTTP Requests**,
+          and servers respond with an **HTTP Response**
+      2. Requests typically have the following schema:
+
+         ```http
+         host: string (example: algoexpert.io)
+         port: integer (example: 80/443)
+         method: string (example: GET, POST, PUT, PATCH, DELETE, OPTIONS)
+         headers: pair list (example: "Content-Type" => "application/json")
+         body: opaque sequence of bytes
+         ```
+
+      3. Responses typically have the following schema:
+
+         ```http
+         status code: integer (example: 200, 404)
+         headers: pair list (example: "Content-Length" => 1234)
+         body: opaque sequence of bytes
+         ```
+
+   4. **IP Packet**
+      1. Sometimes more broadly referred to as just a (network) **packet**, an IP packet is effectively the smallest unit used to describe data being sent
+          over IP, aside from bytes.  An IP packet consists of:
+         1. An **IP Header**, which contains the source and destination **IP Addresses** as well as other information related to the network
+         2. A **payload**, which is just the data being sent over the network
