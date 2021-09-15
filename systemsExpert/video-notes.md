@@ -256,9 +256,46 @@ Design Fundamentals are necessary to tackle of Systems Design Interview.
              primary units if one of them fails
          3. The drawbacks of this approach are added complexity of deciding when to switch and of a switch matrix than can reroute signals correctly and efficiently
    10. **Redundancy At Different Layers**
-       1.  Network Redundancy
-           1.  Layer 2 Redundancy (switches)
-               1.  Active/Standby using Spanning Tree Protocol
-               2.  Active/Active using per VLAN spanning tree protocol and Multiple Spanning Tree Protocol
-           2. Layer 3 Redundancy
-              1. First Hop Redundancy Protocols are designed to provide redundancy to clients by representing multiple default gateways in a group with a single IP
+       1. **Network Redundancy**
+          1. Layer 2 Redundancy (switches)
+             1. Active/Standby using Spanning Tree Protocol
+             2. Active/Active using per VLAN spanning tree protocol and Multiple Spanning Tree Protocol
+          2. Layer 3 Redundancy
+             1. First Hop Redundancy Protocols are designed to provide redundancy to clients by representing multiple default gateways in a group with a single IP
+       2. **VM/Server Redundancy**
+          1. **VMware HA** provides high availability for virtual machines by pooling them and the hosts they reside on into a cluster.  Hosts in the cluster are
+              are monitored and in the event of a failure, the virtual machines on a failed host are restarted on alternate hosts.
+          2. **Primary and Secondary Hosts in a VMware HA Cluster**
+             1. When you add a host to a VMware HA cluster, an agent is uploaded to the host and configured to communicate with other agents in the cluster.
+             2. The first five hosts added to the cluster are designated as primary hosts, and all subsequence hosts are designated as secondary hosts
+             3. The primary hosts maintain and replicate all cluster state and are used to initiate failover actions
+             4. If a primary host is removed from the cluster, VMware HA promotes another (secondary) host to primary status
+             5. If a primary host is going to be offline for an extended period of time, you should remove it from the cluster, so that it can be replaced.
+             6. Any host that joins the cluster must communicate with an existing primary host to complete it's configuration, except when adding first host
+             7. At least one primary host must be functional for VMware HA to operate correctly
+             8. If all primary hosts are unavailable (not responding), no hosts can be successfully configured for VMware HA.  You should consider this limit
+                 of five primary hosts per cluster when planning the scale of your cluster.
+             9. One of the primary hosts is also designated as the active primary host and it's responsibilities include:
+                1. Deciding where to restart virtual machines
+                2. Keeping track of failed restart attempts
+                3. Determining when it is appropriate to keep trying to restart a virtual machine
+             10. If the primary host fails, another primary host replaces it.
+       3. **Database Redundancy**
+          1. Have more than one copy of your data in a database system.  It can either be at the table level or the field level.  Usually, copies are called **replica**
+          2. e.g. Replicas in ClustrixDB are distributed across the cluster for redundancy and to balance read, writes, and disk usage.
+       4. **Storage Redundancy**
+          1. [Azure Storage Redundancy](https://www.petri.com/understanding-azure-storage-storage-types-redundancy)
+          2. **Locally Redundant Storage (LRS)**
+             1. LRS ensures that your data stays within a single data center in your chosen region.  Data is replicated three times.  LRS is cheaper than the other types
+                 of redundancy and doesn't provide protection against data center failures
+          3. **Zone-Redundant Storage (ZRS)**
+             1. Only available for block blobs, ZRS keeps three copies of your data across two/three data centers, either within your region or across two regions
+          4. **Geo-Redundant Storage (GRS)**
+             1. This is the type of redundancy that Microsoft recommends by default, and it keeps six copies of your data.  Three copies stay in the primary region, and
+                 the remaining three are replicated to a secondary region
+          5. **Read-Access Geo-Redundant Storage (RA-GRS)**
+             1. The default redundancy setting, RA-GRS replicates data to a secondary region, where apps also get read access to the data
+          6. **Application Redundancy**
+             1. Redundant applications, normally server applications, provide backup capability in the event that the application fails.  That is, if one server
+                 (the primary server) goes out of service for some reason, such as lost connectivity, the other server (the backup server) can act as the primary
+                 server, with little or no loss of service
