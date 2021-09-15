@@ -161,3 +161,44 @@ Design Fundamentals are necessary to tackle of Systems Design Interview.
       1. Short for **Random Access Memory (RAM)**.  Data stored in memory will be lost when the process that has written that data dies.
    4. **Persistent Storage**
       1. Usually refers to disk, but in general it is any form of storage that persists if the process in charge of managing it dies
+
+## **06 - Latency and Throughput**
+
+1. **Key Terms**
+   1. **Latency** and **Throughput** are the two most important measures of the performance of a system.  They are not correlated.
+   2. **Latency** - How long does it take data to get from one point in a system to another point in a system
+      1. The time it takes for a certain operation to complete in a system.  Most often this measure is a time duration, like milliseconds or seconds.
+          You should know these orders of magnitude:
+          1. Reading 1 MB from RAM: 250 µs (0.25 ms - microseconds)
+          2. Reading 1 MB from SSD: 1,000 µs (1 ms)
+          3. Transfer 1 MB over 1 GB/s Network: 10,000 µs (10 ms)
+          4. Reading 1 MB from HDD: 20,000 µs (20 ms)
+          5. Inter-Continental Road Trip: 150,000 µs (150 ms)
+   3. **Throughput**
+      1. The number of operations that a system can handle properly per time unit.  For instance the throughput of a server can often be measured
+          in **requests per second** (**RPS** or **QPS**)
+
+## **07 - Availability**
+
+1. **Key Terms**
+   1. **Availability**
+      1. The odds of a particular server or service being up and running at any point in time, usually measured in **percentages**.  A server
+          that has 99% availability will be operational 99% of the time (this would be described as having two **nines** of availability)
+   2. **High Availability**
+      1. Used to describe systems that have particularly high levels of availability, typically 5 **nines** or more
+      2. Sometimes abbreviated **"HA"**
+   3. **Nines**
+      1. Typically refers to percentages of uptime.  For example, 5 **nines** of availability means an uptime 99.999% of the time.
+      2. Downtimes expected per year depending on **nines**:
+         1. 99% (2 nines): 87.7 hours
+         2. 99.9% (3 nines): 8.8 hours
+         3. 99.99% (4 nines): 52.6 minutes
+         4. 99.999% (5 nines): 5.3 minutes
+   4. **Redundancy**
+      1. The process of replicating parts of a system in an effort to make it more reliable
+   5. **Service-Level Agreement (SLA)**
+      1. A collection of guarantees given to a customer by a service provider.  SLAs typically make guarantees on a system's availability, amongst other things.
+      2. Made up of multiple SLOs
+   6. **Service-Level Objective (SLO)**
+      1. A guarantee given to a customer by a service provider.  SLOs typically make guarantees on a system's availability, amongst other things.
+      2. SLOs constitute an SLA
