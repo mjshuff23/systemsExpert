@@ -95,12 +95,22 @@ Design Fundamentals are necessary to tackle of Systems Design Interview.
       1. Stands for **Internet Protocol**.  This network protocol outlines how almost all machine-to-machine communications should happen in the world.
           **TCP**/**UDP**/**HTTP** are built on top of **IP**
    2. **TCP**
-      1. Network protocol built on top of the **Internet Protocol (IP)**.  Allows for ordered, reliable data delivery between machines over the
-          public internet by creating a **connection**
-      2. TCP is usually implemented in the kernel, which exposes **sockets** to applications that they can use to stream data through an open connection.
+      1. Stands for **Transmission Control Protocol**. Network protocol built on top of the **Internet Protocol (IP)**.  Allows for ordered,
+          reliable data delivery between machines over the public internet by creating a **connection**
+      2. **TCP** is usually implemented in the kernel, which exposes **sockets** to applications that they can use to stream data through an open connection.
+         1. The process is similar to a handshake:
+            1. A client reaches out to a server an requests to make a connection
+            2. The server accepts/rejects and reaches out to the client with it's response
+            3. The client creates an open connection with the server
+         2. Connections can timeout with inactivity
+         3. Either client or server can end the connection at any point
+      3. **IP Packets** can also contain **TCP Headers**
    3. **HTTP**
       1. The **H**yper**T**ext **T**ransfer **P**rotocol is a very common network protocol implemented on top of TCP.  Clients make **HTTP Requests**,
           and servers respond with an **HTTP Response**
+         1. **I**nternet **P**rotocol is the foundation.
+         2. **T**ransmission **C**ontrol **P**rotocol is built on top of **IP**
+         3. **H**yper**T**ext **T**ransfer **P**rotocol is built on top of **TCP**
       2. Requests typically have the following schema:
 
          ```http
@@ -123,4 +133,31 @@ Design Fundamentals are necessary to tackle of Systems Design Interview.
       1. Sometimes more broadly referred to as just a (network) **packet**, an IP packet is effectively the smallest unit used to describe data being sent
           over IP, aside from bytes.  An IP packet consists of:
          1. An **IP Header**, which contains the source and destination **IP Addresses** as well as other information related to the network
+            1. Between 20-60 bytes
          2. A **payload**, which is just the data being sent over the network
+      2. Only 2¹⁶ bytes (65k bytes)
+   5. **Protocol**
+      1. An agreed upon set of rules for an interaction between two parties
+
+## **05 - Storage**
+
+1. **Key Terms**
+   1. **Databases**
+      1. Databases are programs that either use disk or memory to do 2 core things.  **Record** data and **Query** data.  In general, they are themselves
+          servers that are long lived and interact with the rest of your application through network calls, with protocols on top of TCP and even HTTP
+      2. Some databases only keep records in memory, and the users of such databases are aware of the fact that those records may be lost forever
+          if the machine or process dies
+      3. For the most part though, databases need persistence of those records, and thus cannot use memory. This means that you have to write your data
+          to disk.  Anything written to disk will remain through power loss or network partitions, so that's what is used to keep permanent records.
+      4. Since machines die often in a large scale system, special disk partitions or volumes are used by the database processes, and those volumes
+          can get recovered even if the machine were to go down permanently
+   2. **Disk**
+      1. Usually refers to either **Hard-Disk Drives (HDD)** or **Solid-State Drives(SSD)**.  Data written to disk will persist through power failures and general
+          machine crashes.  Disk is also referred to **non-volatile storage**
+      2. **SSD** is far faster than **HDD** (See latencies of accessing data from SSD and HDD, but also far more expensive from a financial point of view.
+          Because of that, HDD will typically be used for data that's rarely accessed or updated, but that's stored for a long time, and SSD will be used for
+          data that's frequently accessed and updated.
+   3. **Memory**
+      1. Short for **Random Access Memory (RAM)**.  Data stored in memory will be lost when the process that has written that data dies.
+   4. **Persistent Storage**
+      1. Usually refers to disk, but in general it is any form of storage that persists if the process in charge of managing it dies
